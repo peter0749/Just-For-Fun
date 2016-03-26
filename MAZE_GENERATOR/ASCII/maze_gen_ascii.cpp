@@ -2,7 +2,7 @@
 #define MAX max_size
 #define POINTS max_p
 #define ARRSIZE 1000
-#define DEBUG
+#define NDEBUG
 using namespace std;
 
 typedef struct
