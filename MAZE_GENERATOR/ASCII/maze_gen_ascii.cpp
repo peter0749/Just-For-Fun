@@ -28,6 +28,8 @@ int main(void)
     freopen("ASCII_MAZEOUT.txt","w",stdout);
 #endif
     int dire = 0;
+    int t_dire = 0;
+    int failed = 0;
     int max_p;
     int max_size;
     int n_x, n_y;
@@ -92,11 +94,23 @@ int main(void)
 #endif
         for(int i=0; i<p_count && i<POINTS; i++)
         {
-            dire=rand()%4;
-            n_y = arr[i].y+dirindex[dire][0];
-            n_x = arr[i].x+dirindex[dire][1];
-            if(n_x!=1 && n_y!=1 && n_y!=MAX-2 && n_x!=MAX-2 && maze[n_y][n_x]==0 && (checkcol[n_y]<2 || checkrow[n_x]<2))
-                continue;
+            t_dire = dire = rand()%4;
+
+            failed = 1;
+            do
+            {
+                n_y = arr[i].y+dirindex[dire][0];
+                n_x = arr[i].x+dirindex[dire][1];
+                if(!(n_x!=1 && n_y!=1 && n_y!=MAX-2 && n_x!=MAX-2 && maze[n_y][n_x]==0 && (checkcol[n_y]<2 || checkrow[n_x]<2)))
+                {
+                    failed = 0;
+                    break;
+                }
+                else
+                    dire++;
+                if(dire>=4)dire=0;
+            }while(dire!=t_dire);
+            if(failed) continue;
             maze[n_y][n_x] = 1;
             checkcol[n_x]--;
             checkrow[n_y]--;
