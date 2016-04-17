@@ -57,13 +57,13 @@ Draw::~Draw(void)
 inline void Draw::setCOL(const unsigned int x, const unsigned int y, COLOR c)
 {
     assert(pCLR);
-    pCLR[x+resY*y] = c;
+    pCLR[x+resX*y] = c;
 }
 
 inline COLOR Draw::readCOL(const unsigned int x, const unsigned int y)
 {
     assert(pCLR);
-    return pCLR[x+y*resY];
+    return pCLR[x+y*resX];
 }
 
 bool Draw::wTOPPM(const char *Filename)
