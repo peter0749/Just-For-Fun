@@ -117,7 +117,7 @@ int main(void)
 {
 	int h, w, d;
 	int c_x, c_y, tx, ty, kx, ky, den, i, j, cr, t, brightness;
-	int step;
+	int step, total, est, old;
 	long double scalex, scaley, enterx, entery;
 	long double R,I,nR,nI,tR,tI;
 	long double r, a, tsin,tcos, tcot, A, k;
@@ -144,20 +144,31 @@ int main(void)
 	c_x = img.getX()>>1;
 	si.R=si.G=si.B=0;
 	step=0;
-	for(i=0;i<img.getX();i++)for(j=0;j<img.getY();j++)
+	total = img.getX()/100;
+	est=old=0;
+	for(i=0;i<img.getX();i++)
 	{
-		R = (double)(i-c_x);
-		R = R*scalex+enterx;
-		I = (double)(j-c_y);
-		I = I*scaley+entery;
-		step=INSET(t,R,I);
-		if(step==t) { si.R=si.G=si.B=0; }
-		else
+		for(j=0;j<img.getY();j++)
 		{
-			brightness = step%256;
-			si.R = brightness; si.G = sqrt(brightness*255); si.B = 255;
+			R = (double)(i-c_x);
+			R = R*scalex+enterx;
+			I = (double)(j-c_y);
+			I = I*scaley+entery;
+			step=INSET(t,R,I);
+			if(step==t) { si.R=si.G=si.B=0; }
+			else
+			{
+				brightness = step%256;
+				si.R = brightness; si.G = sqrt(brightness*255); si.B = 255;
+			}
+			img.setCOL(i,j,si);
 		}
-		img.setCOL(i,j,si);
+		est = i/total;
+		if(est<=100 && est!=old)
+		{
+			cout<<est<<"%\n";
+			old = est;
+		}
 	}
 
 	return img.wTOPPM(temp);
