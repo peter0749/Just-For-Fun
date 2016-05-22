@@ -2,7 +2,7 @@
 *   Sorting Practice from 518 course;
 *   Author: Kuang-Yu Jeng;
 *   Date: 2016/5/23;
-*	Note: <stdio.h> and <time.h> are needed; So does the custom compare function ;)
+*	Note: <stdio.h>, <string.h> and <time.h> are needed; So does the custom compare function ;)
 */
 
 #ifndef INCLUDE_SORT
