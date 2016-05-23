@@ -12,14 +12,19 @@
 #ifndef INCLUDE_SORT
 #define INCLUDE_SORT
 
+/*It's seems that Heap-sort does not help...*/
+#if 0
+    #define ENABLE_HEAP
+#endif
+
 #ifndef S_SLOW_MODE
 	#define ENABLE_SHORT
-	#define ENABLE_HEAP
+	#define ENABLE_INSERT
 #endif
 
 #ifdef ENABLE_HEAP
 	#ifndef GROUP
-	#define GROUP 7 //Default Heap size-1
+	#define GROUP 15 //Default Heap size-1
 	#endif
 #endif // ENABLE_HEAP
 
@@ -42,13 +47,34 @@ void real_sort(const int left, const int right, char *ptr, const size_t block, c
         return;
     }
 #endif
+#ifdef ENABLE_INSERT
+    if( right - left < 10 ) // Less than 10 elements
+    {
+        temp = (char*)malloc(word_len);
+        for(i=left+1; i<=right; i++)
+        {
+            for(j=left; j<i && cmp(ptr+j*block, ptr+i*block) <= 0; j++);
+            if(j<i)
+            {
+                memcpy(temp,ptr+i*block,word_len);
+                rd_m = j;
+                for( j=i-1; j>=rd_m; j-- )
+                {
+                    memcpy(ptr+(j+1)*block, ptr+j*block, word_len);
+                }
+                memcpy(ptr+rd_m*block,temp,word_len);
+            }
+        }
+        return;
+    }
+#endif
 
 #ifdef ENABLE_HEAP
-    if( right - left <= GROUP ) //If there are 8 elements, switch to heap sort
+    if( right - left < GROUP ) //If there are GROUP elements, switch to heap sort
     {
         int k, pa;
         register char *t2 = (char*)malloc(word_len);
-        temp = (char*)malloc(word_len*(GROUP+1));
+        temp = (char*)malloc(word_len*(GROUP));
         j = -1;
         for(i=left; i<=right; i++)
         {
