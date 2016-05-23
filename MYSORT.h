@@ -32,6 +32,8 @@ void real_sort(const int left, const int right, char *ptr, const size_t block, c
 {
     if(left>=right)return;/*The size of partition <= 0, exit.*/
     int i, j, rd_m;
+	register char *t2;
+	int k, pa;
     char *temp;
 #ifdef ENABLE_SHORT
     if( right - left == 1 ) //If there are only 2 elements, no sorting is needed.
@@ -72,8 +74,7 @@ void real_sort(const int left, const int right, char *ptr, const size_t block, c
 #ifdef ENABLE_HEAP
     if( right - left < GROUP ) //If there are GROUP elements, switch to heap sort
     {
-        int k, pa;
-        register char *t2 = (char*)malloc(word_len);
+        t2 = (char*)malloc(word_len);
         temp = (char*)malloc(word_len*(GROUP));
         j = -1;
         for(i=left; i<=right; i++)
@@ -94,12 +95,11 @@ void real_sort(const int left, const int right, char *ptr, const size_t block, c
                 else break;;
             }
         }
-        //for(i=0; i<=j; i++)printf("## %d\n", *(int*)(temp+block*i));
-        //puts("ok");
+
         for(i=left; i<=right; i++)
         {
             memcpy(ptr+i*block, temp, word_len);
-            //printf("de %d\n", *(int*)(ptr+i*block));
+
             pa = k = 0;
             if(j==-1)break;
             memcpy(temp,temp+j*block,word_len); j--;
@@ -116,35 +116,47 @@ void real_sort(const int left, const int right, char *ptr, const size_t block, c
                 else break;
             }
         }
-        //for(i=0; i<=9; i++)printf("?? %d\n", *(int*)(temp+block*i));
-        //puts("ok2");
+
         free(temp);
         free(t2);
         return;
     }
 #endif // 1
 
-    temp = (char*)malloc(word_len);/*Allocate temporary variable.*/
-    rd_m = left;
+#ifdef S_SLOW_MODE
+	rd_m = left;
+#endif
+
 #ifndef S_SLOW_MODE
     #ifndef ENLARGE_RAND
-        rd_m += (((int)rand())%(right-left+1)); //Get random pivot
+        rd_m = left + 1 + (((int)rand())%(right-left-1)); //Get random pivot
     #endif
     #ifdef ENLARGE_RAND //Enlarge to 2147483647
-        rd_m += ((int)((rand()<<16)|(rand()<<1)|rand()&1) % (right-left+1)); //Get random pivot
-        //printf("%d\n",RAND_MAX);
+        rd_m = left + 1 + ((int)((rand()<<16)|(rand()<<1)|rand()&1) % (right-left-1)); //Get random pivot
     #endif
-    memcpy(temp, ptr+rd_m*block, word_len);//random pivot? Move from rd_m to leftmost.
-    memcpy(ptr+rd_m*block, ptr+left*block, word_len);
-    memcpy(ptr+left*block,temp,word_len);
+/*Choose better pivot*/
+	if( ( (k=cmp(ptr+rd_m*block,ptr+left*block)) < 0 && (pa=cmp(ptr+left*block, ptr+right*block)) < 0) ||\
+		 ( k>0 && pa>0 ) ) //Suppose LEFT is mid;
+		 {
+		     rd_m = left;
+		 }
+	else if( ( (k=cmp(ptr+rd_m*block,ptr+right*block)) < 0 && (pa=cmp(ptr+right*block, ptr+left*block)) < 0) ||\
+		 ( k>0 && pa>0 ) ) //Suppose RIGHT is mid;
+		 {
+		     rd_m = right;
+		 }
+
 #endif
+	temp = (char*)malloc(word_len);/*Allocate temporary variable.*/
+	t2 = (char*)malloc(word_len);
+	memcpy(t2,ptr+rd_m*block,word_len);
     /*begin to partition.*/
-    i = left;
+    i = left-1;
     j = right+1;
     do
     {
-        do{i++;}while( cmp( ptr+block*i, ptr+block*left ) < 0 );//Find bigger than pivot
-        do{j--;}while( cmp( ptr+block*j, ptr+block*left ) > 0 );//Find smaller than pivot
+        do{i++;}while( cmp( ptr+block*i, t2 ) < 0 );//Find bigger than pivot
+        do{j--;}while( cmp( ptr+block*j, t2 ) > 0 );//Find smaller than pivot
         if(i<j)
         {
             /*Swap it.*/
@@ -153,12 +165,10 @@ void real_sort(const int left, const int right, char *ptr, const size_t block, c
             memcpy(ptr+block*j, temp, word_len);
         }
     }while(i<j);
-    memcpy(temp, ptr+block*j, word_len);
-    memcpy(ptr+block*j, ptr+block*left, word_len);
-    memcpy(ptr+block*left, temp, word_len);
-    free(temp); temp=NULL;
+    free(t2);
+    free(temp);
     /*End of partition.*/
-    real_sort(left, j-1, ptr, block, word_len, cmp);
+    real_sort(left, i-1, ptr, block, word_len, cmp);
     real_sort(j+1, right, ptr, block, word_len, cmp);
 }
 
