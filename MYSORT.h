@@ -2,8 +2,12 @@
 *   Sorting Practice from 581 course;
 *   Author: Kuang-Yu Jeng;
 *   Date: 2016/5/23;
-*	Note: <stdio.h>, <string.h> and <time.h> are needed; So does the custom compare function ;)
+*	Note: <stdio.h>, <string.h> and <time.h> are needed; So does the custom comparison function ;)
+*         And it's better to include <limits.h> too.
 */
+#if RAND_MAX==32767
+#define ENLARGE_RAND
+#endif // RAND_MAX
 
 #ifndef INCLUDE_SORT
 #define INCLUDE_SORT
@@ -15,7 +19,7 @@
 
 #ifdef ENABLE_HEAP
 	#ifndef GROUP
-	#define GROUP 4 //Default Heap size-1
+	#define GROUP 7 //Default Heap size-1
 	#endif
 #endif // ENABLE_HEAP
 
@@ -97,7 +101,13 @@ void real_sort(const int left, const int right, char *ptr, const size_t block, c
     temp = (char*)malloc(word_len);/*Allocate temporary variable.*/
     rd_m = left;
 #ifndef S_SLOW_MODE
-    rd_m += (((int)rand())%(right-left+1)); //Get random pivot
+    #ifndef ENLARGE_RAND
+        rd_m += (((int)rand())%(right-left+1)); //Get random pivot
+    #endif
+    #ifdef ENLARGE_RAND //Enlarge to 2147483647
+        rd_m += ((int)((rand()<<16)|(rand()<<1)|rand()&1) % (right-left+1)); //Get random pivot
+        //printf("%d\n",RAND_MAX);
+    #endif
     memcpy(temp, ptr+rd_m*block, word_len);//random pivot? Move from rd_m to leftmost.
     memcpy(ptr+rd_m*block, ptr+left*block, word_len);
     memcpy(ptr+left*block,temp,word_len);
