@@ -55,17 +55,14 @@ void real_sort(const int left, const int right, char *ptr, const size_t block, c
         temp = (char*)malloc(word_len);
         for(i=left+1; i<=right; i++)
         {
-            for(j=left; j<i && cmp(ptr+j*block, ptr+i*block) <= 0; j++);
-            if(j<i)
+            memcpy(temp,ptr+i*block,word_len);
+            j = i-1;
+            while(j>=0 && cmp(temp, ptr+j*block) < 0)
             {
-                memcpy(temp,ptr+i*block,word_len);
-                rd_m = j;
-                for( j=i-1; j>=rd_m; j-- )
-                {
-                    memcpy(ptr+(j+1)*block, ptr+j*block, word_len);
-                }
-                memcpy(ptr+rd_m*block,temp,word_len);
+                memcpy(ptr+(j+1)*block, ptr+j*block, word_len);
+                j--;
             }
+            memcpy(ptr+(j+1)*block, temp, word_len);
         }
         return;
     }
