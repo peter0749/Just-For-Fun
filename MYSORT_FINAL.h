@@ -20,6 +20,7 @@
 #ifndef S_SLOW_MODE
 #define ENABLE_SHORT
 #define ENABLE_INSERT
+#define NOMID
 #endif
 
 #ifdef ENABLE_HEAP
@@ -137,6 +138,7 @@ void real_sort(int left, const int right, char *ptr, const size_t block, const s
 #ifdef ENLARGE_RAND //Enlarge to 2147483647
         rd_m = left + 1 + ((int)((rand()<<16)|(rand()<<1)|rand()&1) % (right-left-1)); //Get random pivot
 #endif
+#ifdef MID
         /*Choose better pivot*/
         if( ( (k=cmp(ptr+rd_m*block,ptr+left*block)) < 0 && (pa=cmp(ptr+left*block, ptr+right*block)) < 0) ||\
                 ( k>0 && pa>0 ) ) //Suppose LEFT is mid;
@@ -148,7 +150,7 @@ void real_sort(int left, const int right, char *ptr, const size_t block, const s
         {
             rd_m = right;
         }
-
+#endif
 #endif
         temp = (char*)malloc(word_len);
         t2 = (char*)malloc(word_len);
