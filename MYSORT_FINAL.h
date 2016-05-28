@@ -150,8 +150,8 @@ void real_sort(int left, const int right, char *ptr, const size_t block, const s
         {
             rd_m = right;
         }
-#endif
-#endif
+#endif //MID
+#endif //S_SLOW_MODE
         temp = (char*)malloc(word_len);
         t2 = (char*)malloc(word_len);
         i = left;
