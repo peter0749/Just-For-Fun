@@ -14,7 +14,7 @@
 #define INCLUDE_SORT
 
 #define MAX_DEPTH 3
-#define PARALLEL_LEN 127
+#define PARALLEL_LEN 3072
 
 /*It seems that Heap-sort does not help...*/
 #if 1
@@ -43,7 +43,7 @@ typedef struct
     size_t word_len;
     int (*cmp)(const void *, const void *);
     int depth;
-}ARGVS;
+} ARGVS;
 
 void real_sort(int left, const int right, char *ptr, const size_t block, const size_t word_len, int (*cmp)(const void *, const void *), int depth);
 void* qsort_thread(void *init);
@@ -53,12 +53,12 @@ void* qsort_thread(void *init)// with the format of pthread_create :(void*)( voi
 {
     ARGVS *starter = (ARGVS*)init;
     real_sort(starter->left, starter->right, starter->ptr, starter->block, starter->word_len, starter->cmp, starter->depth);//Passing all parameters
-    return NULL;
+    pthread_exit(NULL);
 }
 
 void real_sort(int left, const int right, char *ptr, const size_t block, const size_t word_len, int (*cmp)(const void *, const void *), int depth)
 {
-    //if(left>=right)return;/*The size of partition <= 0, exit.*/
+    if(left>=right)return;/*The size of partition <= 0, exit.*/
     int i, j, rd_m;
     register char *t2;
     int k, pa;
@@ -66,7 +66,6 @@ void real_sort(int left, const int right, char *ptr, const size_t block, const s
     char *temp;
     while(left<right)
     {
-
 #ifdef ENABLE_SHORT
         if( right - left == 1 ) //If there are only 2 elements, no sorting is needed.
         {
@@ -214,26 +213,28 @@ void real_sort(int left, const int right, char *ptr, const size_t block, const s
         /*Parallel Scope*/
         if(depth < MAX_DEPTH && right - left > PARALLEL_LEN)
         {
-            //printf("Entered\n");
             ARGVS arg =
             {
                 left, i-1, ptr, block, word_len, cmp, depth+1
             };
             pthread_t thread;//New thread
-            int re = pthread_create(&thread, NULL, (void*)(qsort_thread), (void*)(&arg) );//Add a new thread
-            if(re){fprintf(stderr,"Failed!\n");exit(-1);}
+            int re = pthread_create(&thread, PTHREAD_CREATE_JOINABLE, (qsort_thread), (void*)(&arg) );//Add a new thread
+            if(re)
+            {
+                fprintf(stderr,"Failed!\n");
+                exit(-1);
+            }
+            real_sort(j+1, right, ptr, block, word_len, cmp, depth+1);//Parallel processing
             pthread_join(thread, NULL);//Wait the thread terminate
-            //printf("exit\n");
+            return;//Halt
         }
         /*End of Parallel*/
         else
         {
-            //printf("here\n");
             real_sort(left, i-1, ptr, block, word_len, cmp, depth+1);
+            left = j+1;//For reusing the recursive stack
         }
-        left = j+1;
     }
-    //real_sort(j+1, right, ptr, block, word_len, cmp);
 }
 
 void my_qsort(void *ptr, size_t n, size_t word_len, int (*cmp)(const void *, const void *))
