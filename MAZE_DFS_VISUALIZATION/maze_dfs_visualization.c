@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#define VIS
+#define UVIS
 #ifdef VIS
 #include <windows.h>
 #endif
@@ -248,7 +248,7 @@ int main(int argc, char *argv[])
     }
     printf("Full Path:\n");
     step = _MIN(fA,fB);
-    for(i=0; i<=step && !( fullpathA[i][0]==fullpathB[i][0] && fullpathA[i][1]==fullpathB[i][1] && fullpathA[2][0]==fullpathB[2][0] ); i++)
+    for(i=0; i<=step && !( fullpathA[i][0]==fullpathB[i][0] && fullpathA[i][1]==fullpathB[i][1] && fullpathA[i][2]==fullpathB[i][2] ); i++)
     {
         printf("Step:%d\tratA(%d,%d,%d)\tratB(%d,%d,%d)\n",i,fullpathA[i][0],fullpathA[i][1],fullpathA[i][2],fullpathB[i][0],fullpathB[i][1],fullpathB[i][2]);
         fprintf(FOUT,"Step:%d\tratA(%d,%d,%d)\tratB(%d,%d,%d)\n",i,fullpathA[i][0],fullpathA[i][1],fullpathA[i][2],fullpathB[i][0],fullpathB[i][1],fullpathB[i][2]);
