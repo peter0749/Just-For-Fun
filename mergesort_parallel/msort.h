@@ -37,6 +37,7 @@ void merge(char *array, size_t block, int L, int M, int R, int (*cmp)(const void
     while(i<=M) memcpy(temp+(k++)*block, array+block*(i++), block);
     while(j<=R) memcpy(temp+(k++)*block, array+block*(j++), block);
     memcpy(array+block*L, temp, block*(R-L+1));
+    free(temp);
     //pass
 }
 void devide(char *array , size_t block, int L, int R, int (*cmp)(const void *a, const void *b) ,int depth){

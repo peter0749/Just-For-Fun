@@ -7,7 +7,7 @@
 #include <limits.h>
 #include <assert.h>
 #include "msort.h"
-#define AMP 100
+#define AMP 300
 #define SIZE 10000
 #define MAXN AMP*SIZE
 int arr[MAXN];
