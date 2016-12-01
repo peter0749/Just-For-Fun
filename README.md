@@ -13,3 +13,4 @@ Just for fun. When I'm bored, I'll write some code here.
 ![Mandelbrot5](./PPM/Mandelbrot_SET/Mandelbrot_SET_IMG/testk8.png)
 ####Parallel Sorting
 ![Pqsort](./SORTING/FINAL/BENCHMARK/pthread_vs.png)
+![Pmsort](./mergesort_parallel/mergesort.png)
