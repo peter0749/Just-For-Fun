@@ -17,7 +17,7 @@ typedef struct{
 void merge(char *, size_t, int, int, int, int (*cmp)(const void *, const void *));
 void devide(char *, size_t, int, int, int (*cmp)(const void *, const void *) ,int);
 void *devide_thread(void*);
-void mergesort(void *, size_t , size_t , int (*cmp)(const void *, const void *));
+void mymergesort(void *, size_t , size_t , int (*cmp)(const void *, const void *));
 
 void merge(char *array, size_t block, int L, int M, int R, int (*cmp)(const void *a, const void *b)){
     int i, j, k, t;
@@ -80,6 +80,6 @@ void *devide_thread(void *init){
 }
 #endif
 
-void mergesort(void *array, size_t num, size_t block, int (*cmp)(const void *a, const void *b)){
+void mymergesort(void *array, size_t num, size_t block, int (*cmp)(const void *a, const void *b)){
     devide((char*)array, block, 0, num-1, cmp, 0);
 }

@@ -25,7 +25,7 @@ int main(void){
                 t = j*SIZE;
                 for(i=0; i<t; ++i) arr[i]=rand();
                 gettimeofday(&startv,&startz);
-                mergesort(arr,t,sizeof(int),cmp);
+                mymergesort(arr,t,sizeof(int),cmp);
                 gettimeofday(&endv,&endz);
                 for(i=1; i<t; ++i) assert(arr[i-1]<=arr[i]);
                 printf("%d\t%ld\n", t, (endv.tv_sec-startv.tv_sec)*1000000+(endv.tv_usec-startv.tv_usec));
