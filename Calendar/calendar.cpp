@@ -66,7 +66,7 @@ namespace Calendar {
 #ifdef __linux__
                 setfontGreen();
 #endif
-                std::cout << std::setfill('-') << std::setw(WIDTH) << "" << std::endl;
+                std::cout << std::setfill('=') << std::setw(WIDTH) << "" << std::endl;
 #ifdef __linux__
                 setfontDefault(); setfontBold();
 #endif
@@ -114,7 +114,7 @@ namespace Calendar {
 #ifdef __linux__
                 setfontGreen();
 #endif
-                std::cout << std::setfill('-') << std::setw(WIDTH) << "" << std::endl;
+                std::cout << std::setfill('=') << std::setw(WIDTH) << "" << std::endl;
 #ifdef __linux__
                 setfontDefault();
 #endif
