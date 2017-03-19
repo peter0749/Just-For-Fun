@@ -3,30 +3,29 @@
 #include <stdexcept>
 #include <limits>
 #include <vector>
+#include <cstring>
 #ifdef __APPLE__
-#define ___USE_color___
+#define __linux__
 #endif
-#ifdef __linux__
-#define ___USE_color___
-#endif
+//#undef __linux__
 
 namespace Calendar {
-    const int monthDay[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    const std::string monthENG[] = { 
+    const int MONTHLIST[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    const std::string MONTH_NAME[] = { 
         "", // for 1-base
         "January"   ,"February" ,"March",
         "April"     ,"May"      ,"June",
         "July"      ,"August"   ,"September",
         "October"   ,"November" ,"December"
     };
-    const std::string weekEng[] = {
+    const std::string WEEK[] = {
         "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"
     };
     class Calendar1901 {
         private:
-            int wLen;
-            int totalW;
-            inline bool checkDataF(int year, int month) {
+            int WORD_LEN;
+            int WIDTH;
+            inline bool inputYrMn(int year, int month) {
                 //judge whether the input is valid.
                 if(year > 2099 || year < 1901)  return false;
                 if(month < 1 || month > 12) return false;
@@ -50,12 +49,12 @@ namespace Calendar {
                            ((26*( (monLt?month+12:month ) + 1))/10);
                 firstDay = ((firstDay % 7) + 7) % 7;
                 // gets the value of theNumberOfDays.
-                theNumberOfDays = monthDay[month];
+                theNumberOfDays = MONTHLIST[month];
                 if(month == 2 && isLeap(year)) {
                     ++theNumberOfDays;
                 }
             }
-#ifdef ___USE_color___
+#ifdef __linux__
             inline void setfontGreen(void) { std::cout << "\033[32m"; }
             inline void setfontMagenta(void) { std::cout << "\033[35m"; }
             inline void setfontCyan(void) { std::cout << "\033[36m"; }
@@ -65,74 +64,74 @@ namespace Calendar {
 #endif
             void getCalendar(int year, int month, int firstDay, int theNumberOfDays) {
                 //std::setw(4): aligned 4 characters as a group
-#ifdef ___USE_color___
+#ifdef __linux__
                 setfontGreen();
 #endif
-                std::cout << std::setfill('=') << std::setw(totalW) << "" << std::endl;
-#ifdef ___USE_color___
+                std::cout << std::setfill('=') << std::setw(WIDTH) << "" << std::endl;
+#ifdef __linux__
                 setfontDefault(); setfontBold();
 #endif
-                std::cout << std::setfill(' ') << std::setw(wLen*3) << year \
-                    << std::setw(wLen) << std::setw(0) << ' ' << monthENG[month] << std::endl;
-#ifdef ___USE_color___
+                std::cout << std::setfill(' ') << std::setw(WORD_LEN*3) << year \
+                    << std::setw(WORD_LEN) << std::setw(0) << ' ' << MONTH_NAME[month] << std::endl;
+#ifdef __linux__
                 setfontDefault(); setfontGreen();
 #endif
-                std::cout << std::setfill('-') << std::setw(totalW) << "" << std::endl;
-#ifdef ___USE_color___
+                std::cout << std::setfill('-') << std::setw(WIDTH) << "" << std::endl;
+#ifdef __linux__
                 setfontDefault();
 #endif
                 std::cout << std::setfill(' ');
-#ifdef ___USE_color___
+#ifdef __linux__
                 setfontCyan();
 #endif
                 for(int i=0; i<7; ++i)
-                    std::cout << std::setw(wLen) << weekEng[i];
-#ifdef ___USE_color___
+                    std::cout << std::setw(WORD_LEN) << WEEK[i];
+#ifdef __linux__
                 setfontDefault();
 #endif
                 std::cout << std::endl;
-                std::cout << std::setw(wLen*firstDay) << "" ;
+                std::cout << std::setw(WORD_LEN*firstDay) << "" ;
                 int Day(1);
                 for(int i=firstDay; i<7; ++i, ++Day) {
                     int t=i%7;
-#ifdef ___USE_color___
+#ifdef __linux__
                     if(t==0||t==6) {
                         setfontRed();
                     } else setfontDefault();
 #endif
-                    std::cout << std::setw(wLen) << Day;
+                    std::cout << std::setw(WORD_LEN) << Day;
                 }
                 for(int i=0; Day<=theNumberOfDays; ++Day, ++i) {
                     int t=i%7;
-#ifdef ___USE_color___
+#ifdef __linux__
                     if(t==0||t==6) {
                         setfontRed();
                     } else setfontDefault();
 #endif
                     if(t==0) std::cout<<std::endl;
-                    std::cout << std::setw(wLen) << Day;
+                    std::cout << std::setw(WORD_LEN) << Day;
                 }
                 std::cout << std::endl;
-#ifdef ___USE_color___
+#ifdef __linux__
                 setfontGreen();
 #endif
-                std::cout << std::setfill('=') << std::setw(totalW) << "" << std::endl;
-#ifdef ___USE_color___
+                std::cout << std::setfill('=') << std::setw(WIDTH) << "" << std::endl;
+#ifdef __linux__
                 setfontDefault();
 #endif
             }
         public:
             inline void adjW(int l=4) {
-                this->wLen=(l<4?4:l);
-                this->totalW=this->wLen*7;
+                this->WORD_LEN=(l<4?4:l);
+                this->WIDTH=this->WORD_LEN*7;
             }
             Calendar1901(int l=4) {
-                this->wLen=(l<4?4:l);
-                this->totalW=this->wLen*7;
+                this->WORD_LEN=(l<4?4:l);
+                this->WIDTH=this->WORD_LEN*7;
             }
             bool showCalendar(int year, int month) {
                 int firstDay, theNumberOfDays;
-                if(!checkDataF(year, month)) return false;
+                if(!inputYrMn(year, month)) return false;
                 get1stOfMonth(year, month, firstDay, theNumberOfDays);
                 getCalendar(year, month, firstDay, theNumberOfDays);
                 return true;
@@ -142,24 +141,16 @@ namespace Calendar {
 
 using namespace std;
 
-int main(void) {
-    int year, month, wsize;
-    string checkExit;
-    Calendar::Calendar1901 cla(6);
-    while(1) {
-        try {
-            cout << "Enter\n" << "year month width" << endl;
-            cin >> year >> month >> wsize;
-            cla.adjW(wsize);
-            if(!cin.good() || !cla.showCalendar(year, month)) throw runtime_error("Invalid year/month");
-        } catch(runtime_error err) {
-            cerr<<err.what()<<endl;
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-        }
-        cout << "Enter y/Y to continue" << endl;
-        cin>>checkExit;
-        if( !cin.good() || !(checkExit=="y" || checkExit=="Y")) break;
+int main(int argc, char **argv) {
+    if(argc<3 || argc>4 || ( argc==2&&strncmp(argv[1],"--help",6)==0 ) ) {
+        cout<<"Usage: ./calendar year month [width]"<<endl;
+        cout<<"      \"./calendar --help\" to print this help."<<endl;
+        return 0;
+    }
+    Calendar::Calendar1901 cal(argc==4?atoi(argv[3]):4);
+    if(!cal.showCalendar(atoi(argv[1]), atoi(argv[2]))) {
+        cerr<<"Invalid input format!"<<endl;
+        cerr<<"Note: year[1901,2099], month[1-12]"<<endl;
     }
     return 0;    
 }
