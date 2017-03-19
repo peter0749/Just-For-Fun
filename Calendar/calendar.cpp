@@ -3,6 +3,9 @@
 #include <stdexcept>
 #include <limits>
 #include <vector>
+#ifdef __APPLE__
+#define __linux__
+#endif
 //#undef __linux__
 
 namespace Calendar {
