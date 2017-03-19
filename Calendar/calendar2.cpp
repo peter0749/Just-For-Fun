@@ -95,10 +95,10 @@ namespace Calendar {
                 for(int i=firstDay; i<7; ++i, ++Day) {
                     int t=i%7;
 #ifdef __linux__
-                    if(t==0||t==6) {
-                        setfontRed();
-                    } else if(Day==day) {
+                    if(Day==day) {
                         setfontCyan();
+                    } else if(t==0||t==6) {
+                        setfontRed();
                     } else setfontDefault();
 #endif
                     std::cout << std::setw(WORD_LEN) << Day;
@@ -106,10 +106,10 @@ namespace Calendar {
                 for(int i=0; Day<=theNumberOfDays; ++Day, ++i) {
                     int t=i%7;
 #ifdef __linux__
-                    if(t==0||t==6) {
-                        setfontRed();
-                    } else if(Day==day) {
+                    if(Day==day) {
                         setfontCyan();
+                    } else if(t==0||t==6) {
+                        setfontRed();
                     } else setfontDefault();
 #endif
                     if(t==0) std::cout<<std::endl;
