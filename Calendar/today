@@ -1,0 +1,9 @@
+#!/bin/bash
+if [[ $1 = *[!\ ]* ]]; then
+    width=$1
+else
+    width=4
+fi
+DATE=`date +%Y\ %m\ %d`
+/usr/local/bin/calendar2 $DATE $width
+
