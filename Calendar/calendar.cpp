@@ -5,9 +5,11 @@
 #include <vector>
 #include <cstring>
 #ifdef __APPLE__
-#define __linux__
+#define ___USECOL___
 #endif
-//#undef __linux__
+#ifdef __linux__
+#define ___USECOL___
+#endif
 
 namespace Calendar {
     const int MONTHLIST[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -53,7 +55,7 @@ namespace Calendar {
                     ++theNumberOfDays;
                 }
             }
-#ifdef __linux__
+#ifdef ___USECOL___
             inline void setfontGreen(void) { std::cout << "\033[32m"; }
             inline void setfontMagenta(void) { std::cout << "\033[35m"; }
             inline void setfontCyan(void) { std::cout << "\033[36m"; }
@@ -63,29 +65,29 @@ namespace Calendar {
 #endif
             void getCalendar(int year, int month, int firstDay, int theNumberOfDays) {
                 //std::setw(4): aligned 4 characters as a group
-#ifdef __linux__
+#ifdef ___USECOL___
                 setfontGreen();
 #endif
                 std::cout << std::setfill('=') << std::setw(WIDTH) << "" << std::endl;
-#ifdef __linux__
+#ifdef ___USECOL___
                 setfontDefault(); setfontBold();
 #endif
                 std::cout << std::setfill(' ') << std::setw(WORD_LEN*3) << year \
                     << std::setw(WORD_LEN) << std::setw(0) << ' ' << MONTH_NAME[month] << std::endl;
-#ifdef __linux__
+#ifdef ___USECOL___
                 setfontDefault(); setfontGreen();
 #endif
                 std::cout << std::setfill('-') << std::setw(WIDTH) << "" << std::endl;
-#ifdef __linux__
+#ifdef ___USECOL___
                 setfontDefault();
 #endif
                 std::cout << std::setfill(' ');
-#ifdef __linux__
+#ifdef ___USECOL___
                 setfontCyan();
 #endif
                 for(int i=0; i<7; ++i)
                     std::cout << std::setw(WORD_LEN) << WEEK[i];
-#ifdef __linux__
+#ifdef ___USECOL___
                 setfontDefault();
 #endif
                 std::cout << std::endl;
@@ -93,7 +95,7 @@ namespace Calendar {
                 int Day(1);
                 for(int i=firstDay; i<7; ++i, ++Day) {
                     int t=i%7;
-#ifdef __linux__
+#ifdef ___USECOL___
                     if(t==0||t==6) {
                         setfontRed();
                     } else setfontDefault();
@@ -102,7 +104,7 @@ namespace Calendar {
                 }
                 for(int i=0; Day<=theNumberOfDays; ++Day, ++i) {
                     int t=i%7;
-#ifdef __linux__
+#ifdef ___USECOL___
                     if(t==0||t==6) {
                         setfontRed();
                     } else setfontDefault();
@@ -111,11 +113,11 @@ namespace Calendar {
                     std::cout << std::setw(WORD_LEN) << Day;
                 }
                 std::cout << std::endl;
-#ifdef __linux__
+#ifdef ___USECOL___
                 setfontGreen();
 #endif
                 std::cout << std::setfill('=') << std::setw(WIDTH) << "" << std::endl;
-#ifdef __linux__
+#ifdef ___USECOL___
                 setfontDefault();
 #endif
             }
