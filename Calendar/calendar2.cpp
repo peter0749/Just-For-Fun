@@ -41,10 +41,9 @@ namespace Calendar {
 
             void get1stOfMonth(int year, int month, int &firstDay, int &theNumberOfDays) {
                 // gets the value of firstDay.
-                int century = year / 100;
-                int lowerYear = year%100;
                 bool monLt(month<=2);
-                if(monLt) --lowerYear;
+                int century   = (monLt?year-1:year)/100;
+                int lowerYear = (monLt?year-1:year)%100;
                 firstDay = lowerYear + lowerYear/4 + century/4 - 2*century + \
                            ((26*( (monLt?month+12:month ) + 1))/10);
                 firstDay = ((firstDay % 7) + 7) % 7;
@@ -54,6 +53,7 @@ namespace Calendar {
                     ++theNumberOfDays;
                 }
             }
+
 #ifdef __linux__
             inline void setfontGreen(void) { std::cout << "\033[32m"; }
             inline void setfontMagenta(void) { std::cout << "\033[35m"; }
