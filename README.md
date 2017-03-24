@@ -1,3 +1,5 @@
+## Calendar -- A nice looking callendar for consoles
+
 ### Quick start
 ```
 git clone https://github.com/peter0749/Just-For-Fun --branch Calendar
