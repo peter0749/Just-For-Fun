@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <limits>
 #include <vector>
+#include <cstdlib>
 #include <cstring>
 #ifdef __APPLE__
 #define ___USECOL___
