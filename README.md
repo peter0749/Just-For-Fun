@@ -5,7 +5,7 @@
 ### Quick start
 ```
 git clone https://github.com/peter0749/Just-For-Fun --branch Calendar
-cd Calendar
+cd Just-For-Fun/Calendar
 make install
 today
 ```
