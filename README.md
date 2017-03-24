@@ -24,7 +24,16 @@ git clone https://github.com/peter0749/Just-For-Fun --branch Calendar
 `make`
 
 ### How to use?
+For calendar:
+
 ```
 Usage:  ./calendar year month [width]
         ./calendar --help to print help.
 ```
+
+For today:
+
+```
+today
+```
+Will show today's calendar.
