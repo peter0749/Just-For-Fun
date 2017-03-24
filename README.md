@@ -1,4 +1,4 @@
-## Calendar -- A nice looking callendar for consoles
+## Calendar -- A nice looking calendar for consoles
 
 ![img2](./img/img2.png)
 
