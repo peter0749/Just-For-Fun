@@ -1,6 +1,6 @@
 ## Calendar -- A nice looking callendar for consoles
 
-![img](./img/img.png)
+![img2](./img/img2.png)
 
 ### Quick start
 ```
