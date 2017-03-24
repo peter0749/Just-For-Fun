@@ -5,7 +5,7 @@ make install
 today
 ```
 
-> Note: Original executable today, calendar and calendar2 from /usr/local/bin WILL BE OVERWRITE. Install with caution.
+> Note: Original executable today, calendar and calendar2 from /usr/local/bin WILL BE OVERWRITTEN. Install with caution.
 
 ### How to get the source code
 ```
